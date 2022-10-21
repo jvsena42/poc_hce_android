@@ -6,7 +6,7 @@ user-friendly description of the service that you can show in the app UI. You ca
   to handle APDUs.-->
 <host-apdu-service xmlns:android="http://schemas.android.com/apk/res/android"
     android:description="@string/servicedesc"
-    android:requireDeviceUnlock="false">
+    android:requireDeviceUnlock="true">
 
 <!--    The <host-apdu-service> must contain one or more <aid-group> tags. Each <aid-group> tag is required to do the following:
 Contain an android:description attribute that contains a user-friendly description of the AID group, suitable for display in UI.
@@ -16,7 +16,5 @@ Contain one or more <aid-filter> tags, each of which contains a single AID. Spec
         android:category="other"
         android:description="@string/aiddescription">
         <aid-filter android:name="F0010203040506" />
-        <aid-filter android:name="F0394148148100" />
     </aid-group>
-    <!--TODO IMPLEMENT CATEGORY AND FILTERS-->
 </host-apdu-service>
