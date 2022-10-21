@@ -20,7 +20,7 @@ class MyHostApduService : HostApduService() {
 
     //is called whenever a NFC reader sends an Application Protocol Data Unit (APDU) to your service
     override fun processCommandApdu(commandApdu: ByteArray?, extras: Bundle?): ByteArray {
-        TODO("Not yet implemented")
+        return handleResult(commandApdu)
     }
 
 
@@ -31,5 +31,30 @@ class MyHostApduService : HostApduService() {
 //In both of these cases, your class's onDeactivated() implementation is called with an argument indicating which of the two happened.
     override fun onDeactivated(reason: Int) {
         Log.d(TAG, "Deactivated: " + reason)
+    }
+
+    private fun handleResult(commandApdu: ByteArray?): ByteArray {
+        if (commandApdu == null) {
+            return STATUS_FAILED.hexStringToByteArray()
+        }
+
+        val hexCommandApdu = commandApdu.toHex()
+        if (hexCommandApdu.length < MIN_APDU_LENGTH) {
+            return STATUS_FAILED.hexStringToByteArray()
+        }
+
+        if (hexCommandApdu.substring(0, 2) != DEFAULT_CLA) {
+            return CLA_NOT_SUPPORTED.hexStringToByteArray()
+        }
+
+        if (hexCommandApdu.substring(2, 4) != SELECT_INS) {
+            return INS_NOT_SUPPORTED.hexStringToByteArray()
+        }
+
+        return if (hexCommandApdu.substring(10, 24) == AID) {
+            STATUS_SUCCESS.hexStringToByteArray()
+        } else {
+            STATUS_FAILED.hexStringToByteArray()
+        }
     }
 }
