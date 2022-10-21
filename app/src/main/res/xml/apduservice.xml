@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--The <host-apdu-service> tag must contain an <android:description> attribute that contains a
+user-friendly description of the service that you can show in the app UI. You can use the
+ requireDeviceUnlock attribute to specify that the device is unlocked before you invoke this service
+  to handle APDUs.-->
+<host-apdu-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/servicedesc"
+    android:requireDeviceUnlock="false">
+
+<!--    The <host-apdu-service> must contain one or more <aid-group> tags. Each <aid-group> tag is required to do the following:
+Contain an android:description attribute that contains a user-friendly description of the AID group, suitable for display in UI.
+Have its android:category attribute set to indicate the category the AID group belongs to, such as the string constants defined by CATEGORY_PAYMENT or CATEGORY_OTHER.
+Contain one or more <aid-filter> tags, each of which contains a single AID. Specify the AID in hexadecimal format, and make sure it contains an even number of characters.-->
+    <aid-group
+        android:category="other"
+        android:description="@string/aiddescription">
+        <aid-filter android:name="F0010203040506" />
+        <aid-filter android:name="F0394148148100" />
+    </aid-group>
+    <!--TODO IMPLEMENT CATEGORY AND FILTERS-->
+</host-apdu-service>
