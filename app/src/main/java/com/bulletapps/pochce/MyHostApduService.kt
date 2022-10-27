@@ -43,15 +43,15 @@ class MyHostApduService : HostApduService() {
             return STATUS_FAILED.hexStringToByteArray()
         }
 
-        if (hexCommandApdu.substring(0, 2) != DEFAULT_CLA) {
+        if (hexCommandApdu.getCLA() != DEFAULT_CLA) {
             return CLA_NOT_SUPPORTED.hexStringToByteArray()
         }
 
-        if (hexCommandApdu.substring(2, 4) != SELECT_INS) {
+        if (hexCommandApdu.getINS() != SELECT_INS) {
             return INS_NOT_SUPPORTED.hexStringToByteArray()
         }
 
-        return if (hexCommandApdu.substring(10, 24) == AID) {
+        return if (hexCommandApdu.getAID() == AID) {
             STATUS_SUCCESS.hexStringToByteArray()
         } else {
             STATUS_FAILED.hexStringToByteArray()

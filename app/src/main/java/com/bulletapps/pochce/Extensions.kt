@@ -30,3 +30,7 @@ fun ByteArray.toHex() : String {
 
     return result.toString()
 }
+
+fun String.getCLA() = substring(0, 2)
+fun String.getINS() = substring(2, 4)
+fun String.getAID() = substring(10, 24)
