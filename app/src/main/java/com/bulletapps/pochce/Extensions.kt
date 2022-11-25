@@ -1,5 +1,7 @@
 package com.bulletapps.pochce
 
+import android.nfc.cardemulation.HostApduService
+
 const val HEX_CHARS = "0123456789ABCDEF"
 private val HEX_CHARS_ARRAY = "0123456789ABCDEF".toCharArray()
 
@@ -34,3 +36,9 @@ fun ByteArray.toHex() : String {
 fun String.getCLA() = substring(0, 2)
 fun String.getINS() = substring(2, 4)
 fun String.getAID() = substring(10, 24)
+
+fun Int.toReason() = when {
+    this == HostApduService.DEACTIVATION_LINK_LOSS -> "DEACTIVATION_LINK_LOSS"
+    this == HostApduService.DEACTIVATION_DESELECTED -> "DEACTIVATION_DESELECTED"
+    else -> "UNKNOW"
+}

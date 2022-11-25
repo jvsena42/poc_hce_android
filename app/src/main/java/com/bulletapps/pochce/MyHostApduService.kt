@@ -3,11 +3,12 @@ package com.bulletapps.pochce
 import android.nfc.cardemulation.HostApduService
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 
 class MyHostApduService : HostApduService() {
 
     companion object {
-        val TAG = "Host Card Emulator"
+        val TAG = "HOST_CARD_EMULATOR"
         val STATUS_SUCCESS = "9000"
         val STATUS_FAILED = "6F00"
         val CLA_NOT_SUPPORTED = "6E00"
@@ -30,31 +31,40 @@ class MyHostApduService : HostApduService() {
 //The NFC link between the NFC reader and your device is broken.
 //In both of these cases, your class's onDeactivated() implementation is called with an argument indicating which of the two happened.
     override fun onDeactivated(reason: Int) {
-        Log.d(TAG, "Deactivated: " + reason)
+    val message = "Deactivated: " + reason.toReason()
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    Log.d(TAG, message)
     }
 
     private fun handleResult(commandApdu: ByteArray?): ByteArray {
+        Log.d(TAG, "START")
         if (commandApdu == null) {
+            Log.d(TAG, "commandApdu NULL")
             return STATUS_FAILED.hexStringToByteArray()
         }
 
         val hexCommandApdu = commandApdu.toHex()
-        if (hexCommandApdu.length < MIN_APDU_LENGTH) {
-            return STATUS_FAILED.hexStringToByteArray()
-        }
+//        if (hexCommandApdu.length < MIN_APDU_LENGTH) {
+//            return STATUS_FAILED.hexStringToByteArray()
+//        }
 
-        if (hexCommandApdu.getCLA() != DEFAULT_CLA) {
-            return CLA_NOT_SUPPORTED.hexStringToByteArray()
-        }
+//        if (hexCommandApdu.getCLA() != DEFAULT_CLA) {
+//            return CLA_NOT_SUPPORTED.hexStringToByteArray()
+//        }
+//
+//        if (hexCommandApdu.getINS() != SELECT_INS) {
+//            return INS_NOT_SUPPORTED.hexStringToByteArray()
+//        }
 
-        if (hexCommandApdu.getINS() != SELECT_INS) {
-            return INS_NOT_SUPPORTED.hexStringToByteArray()
-        }
 
-        return if (hexCommandApdu.getAID() == AID) {
-            STATUS_SUCCESS.hexStringToByteArray()
-        } else {
-            STATUS_FAILED.hexStringToByteArray()
-        }
+        Log.d(TAG, "AID: ${hexCommandApdu.getAID()}")
+//        return if (hexCommandApdu.getAID() == AID) {
+//            STATUS_SUCCESS.hexStringToByteArray()
+//        } else {
+//            STATUS_FAILED.hexStringToByteArray()
+//        }
+        Toast.makeText(this, "Sucesso na leitura $STATUS_SUCCESS", Toast.LENGTH_LONG).show()
+        sendResponseApdu(STATUS_SUCCESS.hexStringToByteArray())
+        return STATUS_SUCCESS.hexStringToByteArray()
     }
 }
